@@ -169,7 +169,7 @@ namespace OpenBve {
 		/// <summary>Represents a very large sans serif font.</summary>
 		internal static readonly OpenGlFont VeryLargeFont = new OpenGlFont(FontFamily.GenericSansSerif, 27.0f);
 
-        internal static readonly OpenGlFont EvenLargerFont = new OpenGlFont(FontFamily.GenericSansSerif, 34.0f);
+		internal static readonly OpenGlFont EvenLargerFont = new OpenGlFont(FontFamily.GenericSansSerif, 34.0f);
 
 		
 		// --- functions ---
@@ -181,11 +181,11 @@ namespace OpenBve {
 			if (value == 0) {
 				throw new ArgumentException();
 			}
-		    value -= 1;
-		    for (int i = 1; i < sizeof(int) << 3; i <<= 1) {
-		        value |= value >> i;
-		    }
-		    return value + 1;
+			value -= 1;
+			for (int i = 1; i < sizeof(int) << 3; i <<= 1) {
+				value |= value >> i;
+			}
+			return value + 1;
 		}
 		
 	}

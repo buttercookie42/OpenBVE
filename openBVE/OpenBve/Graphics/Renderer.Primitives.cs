@@ -24,7 +24,7 @@ namespace OpenBve {
 				GL.Vertex2(point.X, point.Y + size.Height);
 				GL.End();
 			} else {
-                GL.Enable(EnableCap.Texture2D);
+				GL.Enable(EnableCap.Texture2D);
 				GL.BindTexture(TextureTarget.Texture2D, texture.OpenGlTextures[(int)Textures.OpenGlTextureWrapMode.ClampClamp].Name);
 				if (color.HasValue) {
 					GL.Color4(color.Value.R, color.Value.G, color.Value.B, color.Value.A);

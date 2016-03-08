@@ -8,24 +8,24 @@ namespace OpenBve {
 	internal static class Loading {
 
 		// members
-        /// <summary>The current route loading progress</summary>
+		/// <summary>The current route loading progress</summary>
 		internal static double RouteProgress;
-        /// <summary>The current train loading progress</summary>
+		/// <summary>The current train loading progress</summary>
 		internal static double TrainProgress;
-        /// <summary>Set this member to true to cancel loading</summary>
+		/// <summary>Set this member to true to cancel loading</summary>
 		internal static bool Cancel;
-        /// <summary>Whether loading is complete</summary>
+		/// <summary>Whether loading is complete</summary>
 		internal static bool Complete;
-        /// <summary>Whether there is currently a job waiting to complete in the main game loop</summary>
-        internal static bool JobAvailable = false;
+		/// <summary>Whether there is currently a job waiting to complete in the main game loop</summary>
+		internal static bool JobAvailable = false;
 		private static Thread Loader;
-        /// <summary>The current route file</summary>
+		/// <summary>The current route file</summary>
 		private static string CurrentRouteFile;
-        /// <summary>The character encoding of this route file</summary>
+		/// <summary>The character encoding of this route file</summary>
 		private static Encoding CurrentRouteEncoding;
-        /// <summary>The current train folder</summary>
+		/// <summary>The current train folder</summary>
 		private static string CurrentTrainFolder;
-        /// <summary>The character encoding of this train</summary>
+		/// <summary>The character encoding of this train</summary>
 		private static Encoding CurrentTrainEncoding;
 		internal static double TrainProgressCurrentSum;
 		internal static double TrainProgressCurrentWeight;
@@ -44,13 +44,13 @@ namespace OpenBve {
 			CurrentRouteEncoding = RouteEncoding;
 			CurrentTrainFolder = TrainFolder;
 			CurrentTrainEncoding = TrainEncoding;
-            //Set the route and train folders in the info class
-		    Game.RouteInformation.RouteFile = RouteFile;
-		    Game.RouteInformation.TrainFolder = TrainFolder;
-		    Game.RouteInformation.FilesNotFound = null;
-		    Game.RouteInformation.ErrorsAndWarnings = null;
-		    Loader = new Thread(LoadThreaded) {IsBackground = true};
-		    Loader.Start();
+			//Set the route and train folders in the info class
+			Game.RouteInformation.RouteFile = RouteFile;
+			Game.RouteInformation.TrainFolder = TrainFolder;
+			Game.RouteInformation.FilesNotFound = null;
+			Game.RouteInformation.ErrorsAndWarnings = null;
+			Loader = new Thread(LoadThreaded) {IsBackground = true};
+			Loader.Start();
 		}
 
 		/// <summary>Gets the absolute Railway folder for a given route file</summary>
@@ -63,10 +63,10 @@ namespace OpenBve {
 					if (System.IO.Directory.Exists(Subfolder)) {
 						return Subfolder;
 					}
-				    if (Folder == null) continue;
-				    System.IO.DirectoryInfo Info = System.IO.Directory.GetParent(Folder);
-				    if (Info == null) break;
-				    Folder = Info.FullName;
+					if (Folder == null) continue;
+					System.IO.DirectoryInfo Info = System.IO.Directory.GetParent(Folder);
+					if (Info == null) break;
+					Folder = Info.FullName;
 				}
 			} catch { }
 			return Application.StartupPath;
@@ -81,23 +81,23 @@ namespace OpenBve {
 					if (TrainManager.Trains[i] != null && TrainManager.Trains[i].Plugin != null) {
 						if (TrainManager.Trains[i].Plugin.LastException != null) {
 							Interface.AddMessage(Interface.MessageType.Critical, false, "The train plugin " + TrainManager.Trains[i].Plugin.PluginTitle + " caused a critical error in the route and train loader: " + TrainManager.Trains[i].Plugin.LastException.Message);
-                            CrashHandler.LoadingCrash(TrainManager.Trains[i].Plugin.LastException.ToString(), true);
-                             Program.RestartArguments = " ";
-                             Cancel = true;    
+							CrashHandler.LoadingCrash(TrainManager.Trains[i].Plugin.LastException.ToString(), true);
+							 Program.RestartArguments = " ";
+							 Cancel = true;    
 							return;
 						}
 					}
 				}
 				Interface.AddMessage(Interface.MessageType.Critical, false, "The route and train loader encountered the following critical error: " + ex.Message);
-                CrashHandler.LoadingCrash(ex.ToString(), false);
-			    Program.RestartArguments = " ";
-                Cancel = true;                
+				CrashHandler.LoadingCrash(ex.ToString(), false);
+				Program.RestartArguments = " ";
+				Cancel = true;                
 			}
-            if (JobAvailable)
-		    {
-		        Thread.Sleep(10);
-		    }
-            Complete = true;
+			if (JobAvailable)
+			{
+				Thread.Sleep(10);
+			}
+			Complete = true;
 		}
 		private static void LoadEverythingThreaded() {
 			string RailwayFolder = GetRailwayFolder(CurrentRouteFile);
@@ -107,14 +107,14 @@ namespace OpenBve {
 			Game.Reset(true);
 			Game.MinimalisticSimulation = true;
 			// screen
-		    World.CameraTrackFollower = new TrackManager.TrackFollower{ Train = null, CarIndex = -1 };
-		    World.CameraMode = World.CameraViewMode.Interior;
+			World.CameraTrackFollower = new TrackManager.TrackFollower{ Train = null, CarIndex = -1 };
+			World.CameraMode = World.CameraViewMode.Interior;
 			//First, check the format of the route file
-            //RW routes were written for BVE1 / 2, and have a different command syntax
-		    bool IsRW = CsvRwRouteParser.isRWFile(CurrentRouteFile);
+			//RW routes were written for BVE1 / 2, and have a different command syntax
+			bool IsRW = CsvRwRouteParser.isRWFile(CurrentRouteFile);
 			CsvRwRouteParser.ParseRoute(CurrentRouteFile, IsRW, CurrentRouteEncoding, CurrentTrainFolder, ObjectFolder, SoundFolder, false);
-		    Thread createIllustrations = new Thread(Game.RouteInformation.LoadInformation) {IsBackground = true};
-            createIllustrations.Start();
+			Thread createIllustrations = new Thread(Game.RouteInformation.LoadInformation) {IsBackground = true};
+			createIllustrations.Start();
 			System.Threading.Thread.Sleep(1); if (Cancel) return;
 			Game.CalculateSeaLevelConstants();
 			if (Game.BogusPretrainInstructions.Length != 0) {
@@ -140,8 +140,8 @@ namespace OpenBve {
 			System.Threading.Thread.Sleep(1); if (Cancel) return;
 			TrainManager.Trains = new TrainManager.Train[Game.PrecedingTrainTimeDeltas.Length + 1 + (Game.BogusPretrainInstructions.Length != 0 ? 1 : 0)];
 			for (int k = 0; k < TrainManager.Trains.Length; k++) {
-			    TrainManager.Trains[k] = new TrainManager.Train {TrainIndex = k};
-			    if (k == TrainManager.Trains.Length - 1 & Game.BogusPretrainInstructions.Length != 0) {
+				TrainManager.Trains[k] = new TrainManager.Train {TrainIndex = k};
+				if (k == TrainManager.Trains.Length - 1 & Game.BogusPretrainInstructions.Length != 0) {
 					TrainManager.Trains[k].State = TrainManager.TrainState.Bogus;
 				} else {
 					TrainManager.Trains[k].State = TrainManager.TrainState.Pending;
@@ -151,8 +151,8 @@ namespace OpenBve {
 			// load trains
 			double TrainProgressMaximum = 0.7 + 0.3 * (double)TrainManager.Trains.Length;
 			for (int k = 0; k < TrainManager.Trains.Length; k++) {
-                //Sleep for 10ms to allow route loading locks to release
-			    Thread.Sleep(20);
+				//Sleep for 10ms to allow route loading locks to release
+				Thread.Sleep(20);
 				if (TrainManager.Trains[k].State == TrainManager.TrainState.Bogus) {
 					// bogus train
 					string Folder = Program.FileSystem.GetDataFolder("Compatibility", "PreTrain");

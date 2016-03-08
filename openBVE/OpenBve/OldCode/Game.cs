@@ -6,9 +6,9 @@ namespace OpenBve {
 	internal static partial class Game {
 
 		// date and time
-        /// <summary>The current in game time, expressed as the number of seconds since midnight on the first day</summary>
+		/// <summary>The current in game time, expressed as the number of seconds since midnight on the first day</summary>
 		internal static double SecondsSinceMidnight = 0.0;
-        /// <summary>The time at which the current game started, expressed as the number of seconds since midnight on the first day</summary>
+		/// <summary>The time at which the current game started, expressed as the number of seconds since midnight on the first day</summary>
 		internal static double StartupTime = 0.0;
 		internal static bool MinimalisticSimulation = false;
 
@@ -40,22 +40,22 @@ namespace OpenBve {
 
 		/// <summary>The startup state of the train</summary>
 		internal enum TrainStartMode {
-            /// <summary>The train will start with the service brakes applied, and the safety-system plugin initialised</summary>
+			/// <summary>The train will start with the service brakes applied, and the safety-system plugin initialised</summary>
 			ServiceBrakesAts = -1,
-            /// <summary>The train will start with the EB brakes applied, and the safety-system plugin initialised</summary>
+			/// <summary>The train will start with the EB brakes applied, and the safety-system plugin initialised</summary>
 			EmergencyBrakesAts = 0,
-            /// <summary>The train will start with the EB brakes applied, and the safety-system plugin inactive</summary>
+			/// <summary>The train will start with the EB brakes applied, and the safety-system plugin inactive</summary>
 			EmergencyBrakesNoAts = 1
 		}
-        /// <summary>The default mode for the train's safety system to start in</summary>
+		/// <summary>The default mode for the train's safety system to start in</summary>
 		internal static TrainStartMode TrainStart = TrainStartMode.EmergencyBrakesAts;
-        /// <summary>The name of the current train</summary>
+		/// <summary>The name of the current train</summary>
 		internal static string TrainName = "";
 
 		// ================================
 
-        /// <summary>Call this function to reset the game</summary>
-        /// <param name="ResetLogs">Whether the logs should be reset</param>
+		/// <summary>Call this function to reset the game</summary>
+		/// <param name="ResetLogs">Whether the logs should be reset</param>
 		internal static void Reset(bool ResetLogs) {
 			// track manager
 			TrackManager.CurrentTrack = new TrackManager.Track();
@@ -127,33 +127,33 @@ namespace OpenBve {
 			internal double PassengerTimer;
 		}
 		internal static Score CurrentScore = new Score();
-        /// <summary>The default number of points lost when the doors are opened unexpectedly</summary>
+		/// <summary>The default number of points lost when the doors are opened unexpectedly</summary>
 		private const double ScoreFactorOpenedDoors = -10.0;
-        /// <summary>The default number of points lost per second when running overspeed</summary>
+		/// <summary>The default number of points lost per second when running overspeed</summary>
 		private const double ScoreFactorOverspeed = -1.0;
-        /// <summary>The default number of points lost when toppling the train through overspeed</summary>
+		/// <summary>The default number of points lost when toppling the train through overspeed</summary>
 		private const double ScoreFactorToppling = -10.0;
-        /// <summary>The default number of points lost per second late</summary>
+		/// <summary>The default number of points lost per second late</summary>
 		private const double ScoreFactorStationLate = -0.333333333333333;
-        /// <summary>The default number of points lost when missing a station's defined stop point</summary>
+		/// <summary>The default number of points lost when missing a station's defined stop point</summary>
 		private const double ScoreFactorStationStop = -50.0;
-        /// <summary>The default number of points lost when departing unexpectedly from a station</summary>
+		/// <summary>The default number of points lost when departing unexpectedly from a station</summary>
 		private const double ScoreFactorStationDeparture = -1.5;
-        /// <summary>The default number of points lost when the train is derailed</summary>
+		/// <summary>The default number of points lost when the train is derailed</summary>
 		private const int ScoreValueDerailment = -1000;
-        /// <summary>The default number of points lost when a red signal is passed</summary>
+		/// <summary>The default number of points lost when a red signal is passed</summary>
 		private const int ScoreValueRedSignal = -100;
-        /// <summary>The default number of points gained when arriving at a station on time</summary>
+		/// <summary>The default number of points gained when arriving at a station on time</summary>
 		private const int ScoreValueStationPerfectTime = 15;
-        /// <summary>The default number of points gained when stopping within tolerance of a station's defined stop point</summary>
+		/// <summary>The default number of points gained when stopping within tolerance of a station's defined stop point</summary>
 		private const int ScoreValueStationPerfectStop = 15;
-        /// <summary>The default number of points lost when the passengers are experiencing discomfort (Excessive speed through curves etc)</summary>
+		/// <summary>The default number of points lost when the passengers are experiencing discomfort (Excessive speed through curves etc)</summary>
 		private const int ScoreValuePassengerDiscomfort = -20;
-        /// <summary>The default number of points gained when stopping at a scheduled station</summary>
+		/// <summary>The default number of points gained when stopping at a scheduled station</summary>
 		internal const int ScoreValueStationArrival = 100;
 
-        /// <summary>This method should be called once a frame to update the player's score</summary>
-        /// <param name="TimeElapsed">The time elapsed since this function was last called</param>
+		/// <summary>This method should be called once a frame to update the player's score</summary>
+		/// <param name="TimeElapsed">The time elapsed since this function was last called</param>
 		internal static void UpdateScore(double TimeElapsed) {
 			// doors
 			{
@@ -435,7 +435,7 @@ namespace OpenBve {
 		internal static string LogTrainName = "";
 		internal static DateTime LogDateTime = DateTime.Now;
 
-	    private static void AddScore(int Value, ScoreTextToken TextToken, double Duration, bool Count = true) {
+		private static void AddScore(int Value, ScoreTextToken TextToken, double Duration, bool Count = true) {
 			if (Interface.CurrentOptions.GameMode == Interface.GameMode.Arcade) {
 				int n = ScoreMessages.Length;
 				Array.Resize<ScoreMessage>(ref ScoreMessages, n + 1);
@@ -657,7 +657,7 @@ namespace OpenBve {
 			}
 		}
 
-	    public struct Section {
+		public struct Section {
 			internal int PreviousSection;
 			internal int NextSection;
 			internal TrainManager.Train[] Trains;
@@ -668,8 +668,8 @@ namespace OpenBve {
 			internal double TrackPosition;
 			internal SectionType Type;
 			internal SectionAspect[] Aspects;
-            /// <summary>A public read-only variable, which returns the current aspect to external scripts</summary>
-            public int currentAspect{ get { return CurrentAspect; }}
+			/// <summary>A public read-only variable, which returns the current aspect to external scripts</summary>
+			public int currentAspect{ get { return CurrentAspect; }}
 			internal int CurrentAspect;
 			internal int FreeSections;
 			internal void Enter(TrainManager.Train Train) {
@@ -721,14 +721,14 @@ namespace OpenBve {
 			internal TrainManager.Train GetFirstTrain(bool AllowBogusTrain) {
 				for (int i = 0; i < this.Trains.Length; i++)
 				{
-				    if (this.Trains[i].State == TrainManager.TrainState.Available) {
+					if (this.Trains[i].State == TrainManager.TrainState.Available) {
 						return this.Trains[i];
 					}
-				    if (AllowBogusTrain & this.Trains[i].State == TrainManager.TrainState.Bogus) {
-				        return this.Trains[i];
-				    }
+					if (AllowBogusTrain & this.Trains[i].State == TrainManager.TrainState.Bogus) {
+						return this.Trains[i];
+					}
 				}
-			    return null;
+				return null;
 			}
 		}
 		public static Section[] Sections = new Section[] { };
@@ -765,7 +765,7 @@ namespace OpenBve {
 						if (train != null) {
 							break;
 						}
-					    l = Sections[l].PreviousSection;
+						l = Sections[l].PreviousSection;
 					} else {
 						break;
 					}
@@ -981,12 +981,12 @@ namespace OpenBve {
 		}
 		internal static Message[] Messages = new Message[] { };
 		internal static Vector2 MessagesRendererSize = new Vector2(16.0, 16.0);
-        /// <summary>Adds a message to the in-game interface render queue</summary>
-        /// <param name="Text">The text of the message</param>
-        /// <param name="Depencency"></param>
-        /// <param name="Mode"></param>
-        /// <param name="Color">The color of the message text</param>
-        /// <param name="Timeout">The time this message will display for</param>
+		/// <summary>Adds a message to the in-game interface render queue</summary>
+		/// <param name="Text">The text of the message</param>
+		/// <param name="Depencency"></param>
+		/// <param name="Mode"></param>
+		/// <param name="Color">The color of the message text</param>
+		/// <param name="Timeout">The time this message will display for</param>
 		internal static void AddMessage(string Text, MessageDependency Depencency, Interface.GameMode Mode, MessageColor Color, double Timeout) {
 			if (Interface.CurrentOptions.GameMode <= Mode) {
 				if (Depencency == MessageDependency.RouteLimit | Depencency == MessageDependency.SectionLimit) {
@@ -1009,8 +1009,8 @@ namespace OpenBve {
 			Game.AddMessage(text, Game.MessageDependency.None, Interface.GameMode.Expert, Game.MessageColor.Magenta, Game.SecondsSinceMidnight + duration);
 		}
 
-	    internal static double SpeedConversionFactor = 0.0;
-	    internal static string UnitOfSpeed = "km/h";
+		internal static double SpeedConversionFactor = 0.0;
+		internal static string UnitOfSpeed = "km/h";
 
 		internal static void UpdateMessages() {
 			for (int i = 0; i < Messages.Length; i++) {
@@ -1020,21 +1020,21 @@ namespace OpenBve {
 						{
 							double spd = Math.Abs(TrainManager.PlayerTrain.Specs.CurrentAverageSpeed);
 							double lim = TrainManager.PlayerTrain.CurrentRouteLimit;
-                            //Get the speed and limit in km/h
+							//Get the speed and limit in km/h
 							spd = Math.Round(spd * 3.6);
 							lim = Math.Round(lim * 3.6);
 							remove = spd <= lim;
 							string s = Messages[i].InternalText, t;
-                            if (SpeedConversionFactor != 0.0)
-                            {
-                                spd = Math.Round(spd * SpeedConversionFactor);
-                                lim = Math.Round(lim * SpeedConversionFactor);
-                            }
+							if (SpeedConversionFactor != 0.0)
+							{
+								spd = Math.Round(spd * SpeedConversionFactor);
+								lim = Math.Round(lim * SpeedConversionFactor);
+							}
 							t = spd.ToString(System.Globalization.CultureInfo.InvariantCulture);
 							s = s.Replace("[speed]", t);
 							t = lim.ToString(System.Globalization.CultureInfo.InvariantCulture);
 							s = s.Replace("[limit]", t);
-                            s = s.Replace("[unit]", UnitOfSpeed);
+							s = s.Replace("[unit]", UnitOfSpeed);
 							Messages[i].DisplayText = s;
 						} break;
 					case MessageDependency.SectionLimit:
@@ -1045,16 +1045,16 @@ namespace OpenBve {
 							lim = Math.Round(lim * 3.6);
 							remove = spd <= lim;
 							string s = Messages[i].InternalText, t;
-                            if (SpeedConversionFactor != 0.0)
-                            {
-                                spd = Math.Round(spd * SpeedConversionFactor);
-                                lim = Math.Round(lim * SpeedConversionFactor);
-                            }
+							if (SpeedConversionFactor != 0.0)
+							{
+								spd = Math.Round(spd * SpeedConversionFactor);
+								lim = Math.Round(lim * SpeedConversionFactor);
+							}
 							t = spd.ToString(System.Globalization.CultureInfo.InvariantCulture);
 							s = s.Replace("[speed]", t);
 							t = lim.ToString(System.Globalization.CultureInfo.InvariantCulture);
 							s = s.Replace("[limit]", t);
-                            s = s.Replace("[unit]", UnitOfSpeed);
+							s = s.Replace("[unit]", UnitOfSpeed);
 							Messages[i].DisplayText = s;
 						} break;
 					case MessageDependency.Station:
@@ -1162,19 +1162,19 @@ namespace OpenBve {
 				j = Value >= 0 & Value < PointsOfInterest.Length ? Value : -1;
 			}
 			// process poi
-		    if (j < 0) return false;
-		    TrackManager.UpdateTrackFollower(ref World.CameraTrackFollower, t, true, false);
-		    World.CameraCurrentAlignment.Position = PointsOfInterest[j].TrackOffset;
-		    World.CameraCurrentAlignment.Yaw = PointsOfInterest[j].TrackYaw;
-		    World.CameraCurrentAlignment.Pitch = PointsOfInterest[j].TrackPitch;
-		    World.CameraCurrentAlignment.Roll = PointsOfInterest[j].TrackRoll;
-		    World.CameraCurrentAlignment.TrackPosition = t;
-		    World.UpdateAbsoluteCamera(0.0);
-		    if (PointsOfInterest[j].Text != null) {
-		        double n = 3.0 + 0.5 * Math.Sqrt((double)PointsOfInterest[j].Text.Length);
-		        Game.AddMessage(PointsOfInterest[j].Text, Game.MessageDependency.None, Interface.GameMode.Expert, Game.MessageColor.White, Game.SecondsSinceMidnight + n);
-		    }
-		    return true;
+			if (j < 0) return false;
+			TrackManager.UpdateTrackFollower(ref World.CameraTrackFollower, t, true, false);
+			World.CameraCurrentAlignment.Position = PointsOfInterest[j].TrackOffset;
+			World.CameraCurrentAlignment.Yaw = PointsOfInterest[j].TrackYaw;
+			World.CameraCurrentAlignment.Pitch = PointsOfInterest[j].TrackPitch;
+			World.CameraCurrentAlignment.Roll = PointsOfInterest[j].TrackRoll;
+			World.CameraCurrentAlignment.TrackPosition = t;
+			World.UpdateAbsoluteCamera(0.0);
+			if (PointsOfInterest[j].Text != null) {
+				double n = 3.0 + 0.5 * Math.Sqrt((double)PointsOfInterest[j].Text.Length);
+				Game.AddMessage(PointsOfInterest[j].Text, Game.MessageDependency.None, Interface.GameMode.Expert, Game.MessageColor.White, Game.SecondsSinceMidnight + n);
+			}
+			return true;
 		}
 
 

@@ -73,7 +73,7 @@ namespace Plugin {
 					this.BrakePattern = Math.Max(this.TargetSpeed, this.Device.ReleaseSpeed);
 				} else {
 					const double earthGravity = 9.81;
-                    double accelerationDueToGravity = earthGravity * this.Gradient / Math.Sqrt(1.0 + this.Gradient * this.Gradient);
+					double accelerationDueToGravity = earthGravity * this.Gradient / Math.Sqrt(1.0 + this.Gradient * this.Gradient);
 					double deceleration = this.Device.DesignDeceleration + accelerationDueToGravity;
 					double distance = this.Position - system.Position;
 					/*

@@ -58,7 +58,7 @@ namespace OpenBveApi {
 		/// <returns>A platform-specific absolute path to the specified directory.</returns>
 		/// <exception cref="System.Exception">Raised when combining the paths failed, for example due to malformed paths or due to unauthorized access.</exception>
 		public static string CombineDirectory(string absolute, string relative) {
-            int index = relative.IndexOf("??", StringComparison.Ordinal);
+			int index = relative.IndexOf("??", StringComparison.Ordinal);
 			if (index >= 0) {
 				string directory = CombineDirectory(absolute, relative.Substring(0, index).TrimEnd());
 				if (System.IO.Directory.Exists(directory)) {
@@ -91,32 +91,32 @@ namespace OpenBveApi {
 						/*
 						 * This part references a directory.
 						 * */
-					    if (absolute != null)
-					    {
-					        string directory = System.IO.Path.Combine(absolute, parts[i]);
-					        if (System.IO.Directory.Exists(directory)) {
-					            absolute = directory;
-					        } else {
-					            /*
+						if (absolute != null)
+						{
+							string directory = System.IO.Path.Combine(absolute, parts[i]);
+							if (System.IO.Directory.Exists(directory)) {
+								absolute = directory;
+							} else {
+								/*
 							 * Try to find the directory case-insensitively.
 							 * */
-					            bool found = false;
-					            if (System.IO.Directory.Exists(absolute)) {
-					                string[] directories = System.IO.Directory.GetDirectories(absolute);
-					                for (int j = 0; j < directories.Length; j++) {
-					                    string name = System.IO.Path.GetFileName(directories[j]);
-					                    if (name != null && name.Equals(parts[i], StringComparison.OrdinalIgnoreCase)) {
-					                        absolute = directories[j];
-					                        found = true;
-					                        break;
-					                    }
-					                }
-					            }
-					            if (!found) {
-					                absolute = directory;
-					            }
-					        }
-					    }
+								bool found = false;
+								if (System.IO.Directory.Exists(absolute)) {
+									string[] directories = System.IO.Directory.GetDirectories(absolute);
+									for (int j = 0; j < directories.Length; j++) {
+										string name = System.IO.Path.GetFileName(directories[j]);
+										if (name != null && name.Equals(parts[i], StringComparison.OrdinalIgnoreCase)) {
+											absolute = directories[j];
+											found = true;
+											break;
+										}
+									}
+								}
+								if (!found) {
+									absolute = directory;
+								}
+							}
+						}
 					}
 				}
 			}
@@ -129,7 +129,7 @@ namespace OpenBveApi {
 		/// <returns>Whether the operation succeeded and the specified file was found.</returns>
 		/// <exception cref="System.Exception">Raised when combining the paths failed, for example due to malformed paths or due to unauthorized access.</exception>
 		public static string CombineFile(string absolute, string relative) {
-            int index = relative.IndexOf("??", StringComparison.Ordinal);
+			int index = relative.IndexOf("??", StringComparison.Ordinal);
 			if (index >= 0) {
 				string file = CombineFile(absolute, relative.Substring(0, index).TrimEnd());
 				if (System.IO.File.Exists(file)) {
@@ -170,53 +170,53 @@ namespace OpenBveApi {
 						/*
 						 * The last part references a file.
 						 * */
-					    if (absolute == null) continue;
-					    string file = System.IO.Path.Combine(absolute, parts[i]);
-					    if (System.IO.File.Exists(file)) {
-					        return file;
-					    }
-					        /*
+						if (absolute == null) continue;
+						string file = System.IO.Path.Combine(absolute, parts[i]);
+						if (System.IO.File.Exists(file)) {
+							return file;
+						}
+							/*
 							 * Try to find the file case-insensitively.
 							 * */
-					        if (System.IO.Directory.Exists(absolute)) {
-					            string[] files = System.IO.Directory.GetFiles(absolute);
-					            for (int j = 0; j < files.Length; j++) {
-					                string name = System.IO.Path.GetFileName(files[j]);
-					                if (name != null && name.Equals(parts[i], StringComparison.OrdinalIgnoreCase)) {
-					                    return files[j];
-					                }
-					            }
-					        }
-					        return file;
-					    
+							if (System.IO.Directory.Exists(absolute)) {
+								string[] files = System.IO.Directory.GetFiles(absolute);
+								for (int j = 0; j < files.Length; j++) {
+									string name = System.IO.Path.GetFileName(files[j]);
+									if (name != null && name.Equals(parts[i], StringComparison.OrdinalIgnoreCase)) {
+										return files[j];
+									}
+								}
+							}
+							return file;
+						
 					} else {
 						/*
 						 * This part references a directory.
 						 * */
-					    if (absolute == null) continue;
-					    string directory = System.IO.Path.Combine(absolute, parts[i]);
-					    if (System.IO.Directory.Exists(directory)) {
-					        absolute = directory;
-					    } else {
-					        /*
+						if (absolute == null) continue;
+						string directory = System.IO.Path.Combine(absolute, parts[i]);
+						if (System.IO.Directory.Exists(directory)) {
+							absolute = directory;
+						} else {
+							/*
 							 * Try to find the directory case-insensitively.
 							 * */
-					        bool found = false;
-					        if (System.IO.Directory.Exists(absolute)) {
-					            string[] directories = System.IO.Directory.GetDirectories(absolute);
-					            for (int j = 0; j < directories.Length; j++) {
-					                string name = System.IO.Path.GetFileName(directories[j]);
-					                if (name != null && name.Equals(parts[i], StringComparison.OrdinalIgnoreCase)) {
-					                    absolute = directories[j];
-					                    found = true;
-					                    break;
-					                }
-					            }
-					        }
-					        if (!found) {
-					            absolute = directory;
-					        }
-					    }
+							bool found = false;
+							if (System.IO.Directory.Exists(absolute)) {
+								string[] directories = System.IO.Directory.GetDirectories(absolute);
+								for (int j = 0; j < directories.Length; j++) {
+									string name = System.IO.Path.GetFileName(directories[j]);
+									if (name != null && name.Equals(parts[i], StringComparison.OrdinalIgnoreCase)) {
+										absolute = directories[j];
+										found = true;
+										break;
+									}
+								}
+							}
+							if (!found) {
+								absolute = directory;
+							}
+						}
 					}
 				}
 			}

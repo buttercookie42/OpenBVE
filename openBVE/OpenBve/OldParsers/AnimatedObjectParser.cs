@@ -20,10 +20,10 @@ namespace OpenBve {
 			bool rpnUsed = false;
 			for (int i = 0; i < Lines.Length; i++) {
 				int j = Lines[i].IndexOf(';');
-                //Trim out comments
-                Lines[i] = j >= 0 ? Lines[i].Substring(0, j).Trim() : Lines[i].Trim();
-                //Test whether RPN functions have been used
-                rpnUsed = Lines[i].IndexOf("functionrpn", StringComparison.OrdinalIgnoreCase) >= 0;
+				//Trim out comments
+				Lines[i] = j >= 0 ? Lines[i].Substring(0, j).Trim() : Lines[i].Trim();
+				//Test whether RPN functions have been used
+				rpnUsed = Lines[i].IndexOf("functionrpn", StringComparison.OrdinalIgnoreCase) >= 0;
 			}
 			if (rpnUsed) {
 				Interface.AddMessage(Interface.MessageType.Error, false, "An animated object file contains RPN functions. These were never meant to be used directly, only for debugging. They won't be supported indefinately. Please get rid of them in file " + FileName);
@@ -170,45 +170,45 @@ namespace OpenBve {
 															Interface.AddMessage(Interface.MessageType.Error, false, "Exactly 3 arguments are expected in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
 														}
 													} break;
-                                                case "states":
-                                                    {
-                                                        string[] s = b.Split(',');
-                                                        if (s.Length >= 1)
-                                                        {
-                                                            string Folder = System.IO.Path.GetDirectoryName(FileName);
-                                                            StateFiles = new string[s.Length];
-                                                            bool NullObject = true;
-                                                            for (int k = 0; k < s.Length; k++) {
-                                                                s[k] = s[k].Trim();
-                                                                if (s[k].Length == 0) {
-                                                                    Interface.AddMessage(Interface.MessageType.Error, false, "File" + k.ToString(Culture) + " is an empty string - did you mean something else? - in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
-                                                                    StateFiles[k] = null;
-                                                                } else if (Interface.ContainsInvalidPathChars(s[k])) {
-                                                                    Interface.AddMessage(Interface.MessageType.Error, false, "File" + k.ToString(Culture) + " contains illegal characters in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
-                                                                    StateFiles[k] = null;
-                                                                } else {
-                                                                    StateFiles[k] = OpenBveApi.Path.CombineFile(Folder, s[k]);
-                                                                    if (!System.IO.File.Exists(StateFiles[k])) {
-                                                                        Interface.AddMessage(Interface.MessageType.Error, true, "File " + StateFiles[k] + " not found in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
-                                                                        StateFiles[k] = null;
-                                                                    }
-                                                                }
-                                                                if (StateFiles[k] != null)
-                                                                {
-                                                                    NullObject = false;
-                                                                }
-                                                                if (NullObject == true)
-                                                                {
-                                                                    Interface.AddMessage(Interface.MessageType.Error, false, "None of the specified files were found in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
-                                                                    return null;
-                                                                }
-                                                            }
-                                                        }
-                                                        else {
-                                                            Interface.AddMessage(Interface.MessageType.Error, false, "At least one argument is expected in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
-                                                            return null;
-                                                        }
-                                                    } break;
+												case "states":
+													{
+														string[] s = b.Split(',');
+														if (s.Length >= 1)
+														{
+															string Folder = System.IO.Path.GetDirectoryName(FileName);
+															StateFiles = new string[s.Length];
+															bool NullObject = true;
+															for (int k = 0; k < s.Length; k++) {
+																s[k] = s[k].Trim();
+																if (s[k].Length == 0) {
+																	Interface.AddMessage(Interface.MessageType.Error, false, "File" + k.ToString(Culture) + " is an empty string - did you mean something else? - in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
+																	StateFiles[k] = null;
+																} else if (Interface.ContainsInvalidPathChars(s[k])) {
+																	Interface.AddMessage(Interface.MessageType.Error, false, "File" + k.ToString(Culture) + " contains illegal characters in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
+																	StateFiles[k] = null;
+																} else {
+																	StateFiles[k] = OpenBveApi.Path.CombineFile(Folder, s[k]);
+																	if (!System.IO.File.Exists(StateFiles[k])) {
+																		Interface.AddMessage(Interface.MessageType.Error, true, "File " + StateFiles[k] + " not found in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
+																		StateFiles[k] = null;
+																	}
+																}
+																if (StateFiles[k] != null)
+																{
+																	NullObject = false;
+																}
+																if (NullObject == true)
+																{
+																	Interface.AddMessage(Interface.MessageType.Error, false, "None of the specified files were found in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
+																	return null;
+																}
+															}
+														}
+														else {
+															Interface.AddMessage(Interface.MessageType.Error, false, "At least one argument is expected in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
+															return null;
+														}
+													} break;
 												case "statefunction":
 													try {
 														StateFunctionLine = i;
@@ -257,45 +257,45 @@ namespace OpenBve {
 													} catch (Exception ex) {
 														Interface.AddMessage(Interface.MessageType.Error, false, ex.Message + " in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
 													} break;
-                                                case "translatexscript":
-                                                    try
-                                                    {
-                                                        Result.Objects[ObjectCount].TranslateXScriptFile = OpenBveApi.Path.CombineDirectory(System.IO.Path.GetDirectoryName(FileName), b);
-                                                    }
-                                                    catch (Exception ex)
-                                                    {
-                                                        Interface.AddMessage(Interface.MessageType.Error, false, ex.Message + " in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
-                                                    } break;
+												case "translatexscript":
+													try
+													{
+														Result.Objects[ObjectCount].TranslateXScriptFile = OpenBveApi.Path.CombineDirectory(System.IO.Path.GetDirectoryName(FileName), b);
+													}
+													catch (Exception ex)
+													{
+														Interface.AddMessage(Interface.MessageType.Error, false, ex.Message + " in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
+													} break;
 												case "translateyfunction":
 													try {
 														Result.Objects[ObjectCount].TranslateYFunction = FunctionScripts.GetFunctionScriptFromInfixNotation(b);
 													} catch (Exception ex) {
 														Interface.AddMessage(Interface.MessageType.Error, false, ex.Message + " in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
 													} break;
-                                                case "translateyscript":
-                                                    try
-                                                    {
-                                                        Result.Objects[ObjectCount].TranslateYScriptFile = OpenBveApi.Path.CombineDirectory(System.IO.Path.GetDirectoryName(FileName), b);
-                                                    }
-                                                    catch (Exception ex)
-                                                    {
-                                                        Interface.AddMessage(Interface.MessageType.Error, false, ex.Message + " in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
-                                                    } break;
+												case "translateyscript":
+													try
+													{
+														Result.Objects[ObjectCount].TranslateYScriptFile = OpenBveApi.Path.CombineDirectory(System.IO.Path.GetDirectoryName(FileName), b);
+													}
+													catch (Exception ex)
+													{
+														Interface.AddMessage(Interface.MessageType.Error, false, ex.Message + " in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
+													} break;
 												case "translatezfunction":
 													try {
 														Result.Objects[ObjectCount].TranslateZFunction = FunctionScripts.GetFunctionScriptFromInfixNotation(b);
 													} catch (Exception ex) {
 														Interface.AddMessage(Interface.MessageType.Error, false, ex.Message + " in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
 													} break;
-                                                case "translatezscript":
-                                                    try
-                                                    {
-                                                        Result.Objects[ObjectCount].TranslateZScriptFile = OpenBveApi.Path.CombineDirectory(System.IO.Path.GetDirectoryName(FileName), b);
-                                                    }
-                                                    catch (Exception ex)
-                                                    {
-                                                        Interface.AddMessage(Interface.MessageType.Error, false, ex.Message + " in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
-                                                    } break;
+												case "translatezscript":
+													try
+													{
+														Result.Objects[ObjectCount].TranslateZScriptFile = OpenBveApi.Path.CombineDirectory(System.IO.Path.GetDirectoryName(FileName), b);
+													}
+													catch (Exception ex)
+													{
+														Interface.AddMessage(Interface.MessageType.Error, false, ex.Message + " in " + a + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
+													} break;
 												case "translatexfunctionrpn":
 													try {
 														Result.Objects[ObjectCount].TranslateXFunction = FunctionScripts.GetFunctionScriptFromPostfixNotation(b);

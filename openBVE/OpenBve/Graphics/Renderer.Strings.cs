@@ -121,29 +121,29 @@ namespace OpenBve {
 			/*
 			 * Render the string.
 			 * */
-            GL.Enable(EnableCap.Texture2D);
+			GL.Enable(EnableCap.Texture2D);
 			for (int i = 0; i < text.Length; i++) {
 				Textures.Texture texture;
 				Fonts.OpenGlFontChar data;
 				i += font.GetCharacterData(text, i, out texture, out data) - 1;
 				if (Textures.LoadTexture(texture, Textures.OpenGlTextureWrapMode.ClampClamp)) {
-                    GL.BindTexture(TextureTarget.Texture2D, texture.OpenGlTextures[(int)Textures.OpenGlTextureWrapMode.ClampClamp].Name);
-                    
+					GL.BindTexture(TextureTarget.Texture2D, texture.OpenGlTextures[(int)Textures.OpenGlTextureWrapMode.ClampClamp].Name);
+					
 					int x = left - (data.PhysicalSize.Width - data.TypographicSize.Width) / 2;
 					int y = top - (data.PhysicalSize.Height - data.TypographicSize.Height) / 2;
 					/*
 					 * In the first pass, mask off the background with pure black.
 					 * */
-                    GL.BlendFunc(BlendingFactorSrc.Zero, BlendingFactorDest.OneMinusSrcColor);
+					GL.BlendFunc(BlendingFactorSrc.Zero, BlendingFactorDest.OneMinusSrcColor);
 					GL.Begin(PrimitiveType.Polygon);
-                    GL.Color4(color.A, color.A, color.A, 1.0f);
-                    GL.TexCoord2(data.TextureCoordinates.Left, data.TextureCoordinates.Top);
+					GL.Color4(color.A, color.A, color.A, 1.0f);
+					GL.TexCoord2(data.TextureCoordinates.Left, data.TextureCoordinates.Top);
 					GL.Vertex2(x, y);
 					GL.Color4(color.A, color.A, color.A, 1.0f);
 					GL.TexCoord2(data.TextureCoordinates.Right, data.TextureCoordinates.Top);
 					GL.Vertex2(x + data.PhysicalSize.Width, y);
 					GL.Color4(color.A, color.A, color.A, 1.0f);
-                    GL.TexCoord2(data.TextureCoordinates.Right, data.TextureCoordinates.Bottom);
+					GL.TexCoord2(data.TextureCoordinates.Right, data.TextureCoordinates.Bottom);
 					GL.Vertex2(x + data.PhysicalSize.Width, y + data.PhysicalSize.Height);
 					GL.Color4(color.A, color.A, color.A, 1.0f);
 					GL.TexCoord2(data.TextureCoordinates.Left, data.TextureCoordinates.Bottom);
@@ -152,13 +152,13 @@ namespace OpenBve {
 					/*
 					 * In the second pass, add the character onto the background.
 					 * */
-                    GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.One);
+					GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.One);
 					GL.Begin(PrimitiveType.Polygon);
 					GL.Color4(color.R, color.G, color.B, color.A);
 					GL.TexCoord2(data.TextureCoordinates.Left, data.TextureCoordinates.Top);
 					GL.Vertex2(x, y);
 					GL.Color4(color.R, color.G, color.B, color.A);
-                    GL.TexCoord2(data.TextureCoordinates.Right, data.TextureCoordinates.Top);
+					GL.TexCoord2(data.TextureCoordinates.Right, data.TextureCoordinates.Top);
 					GL.Vertex2(x + data.PhysicalSize.Width, y);
 					GL.Color4(color.R, color.G, color.B, color.A);
 					GL.TexCoord2(data.TextureCoordinates.Right, data.TextureCoordinates.Bottom);
