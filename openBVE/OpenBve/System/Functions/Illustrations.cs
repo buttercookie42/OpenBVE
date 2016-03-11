@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace OpenBve {
 	internal static class Illustrations {
@@ -111,10 +113,12 @@ namespace OpenBve {
 					}
 				}
 			}
-			// draw station names
+			//Create the list of labels to draw
+			List<StationLabel> labelPositions = new List<StationLabel>();
+			//Calculate Label Positions
+			double wh = w * h;
+			Font f = new Font(FontFamily.GenericSansSerif, wh < 65536.0 ? 9.0f : 10.0f, GraphicsUnit.Pixel);
 			{
-				double wh = w * h;
-				Font f = new Font(FontFamily.GenericSansSerif, wh < 65536.0 ? 9.0f : 10.0f, GraphicsUnit.Pixel);
 				for (int i = 0; i < n; i++) {
 					for (int j = 0; j < TrackManager.CurrentTrack.Elements[i].Events.Length; j++) {
 						if (TrackManager.CurrentTrack.Elements[i].Events[j] is TrackManager.StationStartEvent) {
@@ -163,20 +167,80 @@ namespace OpenBve {
 								}
 								if (yt < oy) {
 									yt = oy;
-								} else if (yt + m.Height > h) {
+								} else if (yt + m.Height > h)
+								{
 									yt = h - m.Height;
 								}
 								r = new RectangleF((float)xt, (float)yt, m.Width, m.Height);
-								g.FillRectangle(stop ? Brushes.White : Brushes.LightGray, r.Left - 1.0f, r.Top - 1.0f, r.Width + 2.0f, r.Height + 2.0f);
-								g.DrawRectangle(stop ? Pens.Black : Pens.Gray, r.Left - 1.0f, r.Top - 1.0f, r.Width + 2.0f, r.Height + 2.0f);
-								g.DrawString(t, f, stop ? Brushes.Black : Brushes.Gray, (float)xt, (float)yt);
+								StationLabel currentLabel = new StationLabel
+								{
+									Name = t,
+									Stop = stop,
+									Location = r,
+									StringX =  (float)xt,
+									StringY = (float)yt
+								};
+								labelPositions.Add(currentLabel);
 							}
 						}
 					}
 				}
 			}
+
+			//Check for intersections
+			if (CheckForIntersections(labelPositions))
+			{
+				//First, remove the non-stopping labels, and try again
+				labelPositions = RemoveStoppingLabels(labelPositions);
+			}
+
+			foreach (var label in labelPositions)
+			{
+				//No intersecting labels
+				g.FillRectangle(label.Stop ? Brushes.White : Brushes.LightGray, label.Location.Left - 1.0f, label.Location.Top - 1.0f, label.Location.Width + 2.0f, label.Location.Height + 2.0f);
+				g.DrawRectangle(label.Stop ? Pens.Black : Pens.Gray, label.Location.Left - 1.0f, label.Location.Top - 1.0f, label.Location.Width + 2.0f, label.Location.Height + 2.0f);
+				g.DrawString(label.Name, f, label.Stop ? Brushes.Black : Brushes.Gray, label.StringX, label.StringY);
+			}
 			// finalize
 			return b;
+		}
+
+		internal struct StationLabel
+		{
+			internal string Name;
+			internal bool Stop;
+			internal RectangleF Location;
+			internal float StringX;
+			internal float StringY;
+		}
+
+		internal static bool CheckForIntersections(List<StationLabel> labelList)
+		{
+			for (int i = labelList.Count - 1; i > 0; i--)
+			{
+				for (int j = 0; j < labelList.Count - 1; j++)
+				{
+					if (labelList[i].Location.IntersectsWith(labelList[j].Location))
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+	   
+		internal static List<StationLabel> RemoveStoppingLabels(List<StationLabel> labelList)
+		{
+			List<StationLabel> newLabels = new List<StationLabel>();
+			for (int i = 0; i < labelList.Count - 1; i++)
+			{
+				if (labelList[i].Stop)
+				{
+					newLabels.Add(labelList[i]);
+				}
+			}
+			return newLabels;
 		}
 
 		// create route gradient profile
@@ -289,12 +353,12 @@ namespace OpenBve {
 			{
 				Font f = new Font(FontFamily.GenericSansSerif, 10.0f, GraphicsUnit.Pixel);
 				Font fs = new Font(FontFamily.GenericSansSerif, 9.0f, GraphicsUnit.Pixel);
-			    StringFormat m = new StringFormat
-			    {
-			        Alignment = StringAlignment.Far,
-			        LineAlignment = StringAlignment.Center
-			    };
-			    System.Globalization.CultureInfo Culture = System.Globalization.CultureInfo.InvariantCulture;
+				StringFormat m = new StringFormat
+				{
+					Alignment = StringAlignment.Far,
+					LineAlignment = StringAlignment.Center
+				};
+				System.Globalization.CultureInfo Culture = System.Globalization.CultureInfo.InvariantCulture;
 				int k = 48 * n / Width;
 				for (int i = 0; i < n; i += k) {
 					double x = ox + w * (double)(i - n0) * nd;
